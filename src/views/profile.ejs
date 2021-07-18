@@ -32,9 +32,13 @@
                   </strong></span>
                 </div>
                 <div class="card-action">
+                  <% if (user) {
                   <h5><b><%= user.username %></b></h5>
+                  <p>Aye Captain, Welcome Aboard</p>
+                  <% } else { %>
                   <!-- <p><strong>Google id</strong>: <%= user.id %></p> -->
                   <p>Aye Captain, Welcome Aboard</p>
+                  <% } %>
                 </div>
               </div>
             </div>

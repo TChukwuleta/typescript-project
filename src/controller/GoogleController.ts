@@ -1,6 +1,7 @@
 import passport from 'passport'
 const GoogleStrategy = require('passport-google-oauth2').Strategy
 import User from '../models/userModel'
+const keys = require('../../keys')
 
 
 passport.serializeUser((user: any, done: any) => {
@@ -10,14 +11,14 @@ passport.serializeUser((user: any, done: any) => {
 passport.deserializeUser((id: string, done: any) => {
     User.findById(id).then((user) => {
         done(null, user)
-    }) 
+    })  
 })
 
 
 passport.use(new GoogleStrategy({
-    clientID: '429617625458-kco15ih6bsr94hmuedchd5t0all5hv0s.apps.googleusercontent.com',
-    clientSecret: 'bjFfOmiKv8aYXfPQh0OTztbH',
-    callbackURL: 'http://localhost:4000/auth/google/redirect',
+    clientID: keys.google.clientID,
+    clientSecret: keys.google.clientSecret,
+    callbackURL: keys.google.callbackURL,
     passReqToCallback: true
 }, (request: any, accessToken: any, refreshToken: any, profile: any, done: any) => {
     console.log(profile)

@@ -5,14 +5,15 @@ import authRoutes from './routes/authRoutes'
 import passport from 'passport'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+const keys = require('../keys')
 const GoogleController = require('./controller/GoogleController')
 const LinkedinController = require('./controller/LinkedinController')
 
 const app: Express = express()
 
 // Setup DB
-const uri = 'mongodb://localhost:27017/finaleapp'
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(keys.mongodb.dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
     console.log('Nanana')
 })
@@ -25,8 +26,8 @@ app.set('views', __dirname + '/views')
 app.set('view engine', 'ejs')
 
 // Middleware
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session({
     secret: 'NoMoreASecret',
     resave: true

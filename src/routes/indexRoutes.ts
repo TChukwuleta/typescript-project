@@ -1,10 +1,14 @@
 import express, { Request, Response } from 'express'
 const router = express.Router()
-import controller from '../controller/userController'
 
-// Login or landing page
+// landing and Register
 router.get('/', (req: Request, res: Response) => {
     res.render('index.ejs')
+})
+
+// Login Page
+router.get('/login', (req: Request, res: Response) => {
+    res.render('login.ejs')
 })
 
 // Dashboard page
@@ -14,6 +18,10 @@ router.get('/dashboard', (req: Request, res: Response) => {
 
 // Profile page
 router.get('/profile', (req: Request, res: Response) => {
+    res.render('profile.ejs', { user: req.user })
+})
+
+router.get('/dashboard', (req: Request, res: Response) => {
     res.render('profile.ejs', { user: req.user })
 })
 

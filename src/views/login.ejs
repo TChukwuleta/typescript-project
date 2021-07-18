@@ -36,37 +36,37 @@
             </div>
 
             <div class="card-title">
-                <form class="col s12" action="signup">
-                    <div class="row">
+                <form class="col s12" action="login">
+                    <!-- <div class="row">
                         <div class="input-field col s12">
                           <label class="active" for="username">Username</label>
                           <input id="username" type="text" class="validate" name="username">
                         </div>
-                    </div>
-                    <div class="username error"></div>
+                    </div> -->
 
                     <div class="row">
                         <div class="input-field col s12">
                           <label class="active" for="email">Email</label>
                           <input id="email" type="email" class="validate" name="email">
                         </div>
+                        <div class="email error"></div>
                     </div>
-                    <div class="email error"></div>
+
 
                     <div class="row">
                         <div class="input-field col s12">
                           <label class="active" for="password">Password</label>
                           <input id="password" type="password" class="validate" name="password">
                         </div>
+                        <div class="password error"></div>
                     </div>
 
-                    <div class="password error" style="font-size: x-large;"></div>
 
                     <div class="row">
-                        <button class="btn waves-effect waves-light" style="font-size: 25px;" type="submit">Sign Up 
+                        <button class="btn waves-effect waves-light" style="font-size: 25px;" type="submit">Sign In 
                         </button> &nbsp;
-                        <a href="/login" style="font-size: 15px;">
-                          Have an account? Login
+                        <a href="/" style="font-size: 15px;">
+                          No account? Register
                         </a>
                     </div>
                   
@@ -76,12 +76,12 @@
 
             <div class="card-action">
               <a href="/auth/linkedin" class="waves-effect waves-light btn social linkedin">
-                <i class="fa fa-linkedin"></i> Sign up with Linkedin
+                <i class="fa fa-linkedin"></i> Sign in with Linkedin
               </a>
             </div>
             <div class="card-action">
               <a href="/auth/google" class="waves-effect waves-light btn social google">
-                <i class="fa fa-google"></i> Sign up with Google
+                <i class="fa fa-google"></i> Sign in with Google
               </a>
             </div>
 
@@ -97,37 +97,67 @@
     </div>
   </div>
 
+  <!-- <script>
+    const form = document.querySelector('form');
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.password.error');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // reset errors
+      emailError.textContent = '';
+      passwordError.textContent = '';
+      // get values
+      const email = form.email.value;
+      const password = form.password.value;
+      try {
+        const res = await fetch('/signup', { 
+          method: 'POST', 
+          body: JSON.stringify({ email, password }),
+          headers: {'Content-Type': 'application/json'}
+        });
+        const data = await res.json();
+        console.log(data);
+        if (data.errors) {
+          emailError.textContent = data.errorsss.email;
+          passwordError.textContent = data.errorsss.password;
+        }
+        if (data.user) {
+          location.assign('/profile');
+        }
+      }
+      catch (err) {
+        console.log(err);
+      }
+    });
+  </script> -->
 
   <script>
     const form = document.querySelector('form')
     const emailError = document.querySelector('.email.error')
     const passwordError = document.querySelector('.password.error')
-    const usernameError = document.querySelector('.username.error')
+
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault()
 
       // Reset errors
       emailError.textContent = ''
-      usernameError.textContent = ''
       passwordError.textContent = ''
 
       // Get the values
       const email = form.email.value
-      const username = form.username.value
       const password = form.password.value
   
       try {
-        const res = await fetch('/signup', {
+        const res = await fetch('/login', {
           method: 'POST',
-          body: JSON.stringify({ email, username, password }),
+          body: JSON.stringify({ email, password }),
           headers: ({ 'Content-Type': 'application/json' })
         })
         const data = await res.json()
         console.log(data)
         if (data.errorsss) {
           emailError.textContent = data.errorsss.email
-          usernameError.textContent = data.errorsss.username
           passwordError.textContent = data.errorsss.password
         }
         if (data.user) {
@@ -138,11 +168,11 @@
         console.log(e)
       }
   
-      console.log(email, username, password)
+      console.log(email, password)
     })
   </script>
 
-
 </body>
+
 
 </html>

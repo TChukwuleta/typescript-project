@@ -1,6 +1,7 @@
 import passport from "passport";
 const LinkedinStrategy = require('passport-linkedin-oauth2').Strategy
 import User from '../models/userModel'
+const keys = require('../../keys')
 
 
 passport.serializeUser((user: any, done: any) => {
@@ -15,9 +16,9 @@ passport.deserializeUser((id: string, done: any) => {
 
 
 passport.use(new LinkedinStrategy({
-    clientID: '86mmh28945qek5',
-    clientSecret: 'Vxlw7RBwh7k2C4rW',
-    callbackURL: 'http://localhost:4000/auth/linkedin/redirect',
+    clientID: keys.linkedin.clientID,
+    clientSecret: keys.linkedin.clientSecret,
+    callbackURL: keys.linkedin.callbackURL,
     scope: ['r_emailaddress', 'r_liteprofile']
 }, (accessToken: any, refreshToken: any, profile: any, done: any) => {
     console.log(profile)
