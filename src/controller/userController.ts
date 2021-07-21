@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import User from '../models/userModel'
-const keys = require('../../keys')
+const keys = require('../keys')
 import jwt from 'jsonwebtoken'
 
 // Handle errors
@@ -43,21 +43,24 @@ const createToken = (id: string) => {
     })
 }
 
-
-const homePage = (req: Request, res: Response) => { 
-    res.send('Hi')
+// Index Route controller
+const homePage = (req: Request, res: Response) => {
+    res.render('home.ejs') 
 }
 
-const signupGet = (req: Request, res: Response) => {}
+// Sign up GET controller
+const signupGet = (req: Request, res: Response) => {
+    res.render('index.ejs')
+}
 
 // Sign up POST controller
-const signupPost = async (req: Request, res: Response) => {
+const signupPost = async (req: Request, res: Response) => { 
     const { email, password, username } = req.body
     try {
         const user = await User.create({ username, email, password })
         const token = createToken(user._id)
-        res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
-        // res.status(201).json({user: user._id })
+        res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) 
+        res.status(201).json({user: user._id })
     }
     catch (e) {
         const errorsss = handleErrors(e)
@@ -65,7 +68,10 @@ const signupPost = async (req: Request, res: Response) => {
     }
 }
 
-const signinGet = (req: Request, res: Response) => {}
+// Sign In GET controller  
+const signinGet = (req: Request, res: Response) => {
+    res.render('login.ejs')
+}
 
 // Sign in POST controller
 const signinPost = async (req: Request, res: Response) => {
@@ -86,42 +92,115 @@ const signinPost = async (req: Request, res: Response) => {
 // Logout user
 const logoutUser = (req: Request, res: Response) => {
     res.cookie('jwt', '', { maxAge: 1 })
+    req.logout()
     res.redirect('/')
+    // req.logout()
+    // res.redirect('/')
 }
 
-const forgetPass = (req: Request, res: Response, next: NextFunction) => {
-        //console.log('req.body');
-        //console.log(req.body);
-        // User.findOne({email:req.body.email},function(err,data){
-        //     console.log(data);
-        //     if(!data){
-        //         res.send({"Success":"This Email Is not regestered!"});
-        //     }else{
-        //         // res.send({"Success":"Success!"});
-        //         if (req.body.password==req.body.passwordConf) {
-        //         data.password=req.body.password;
-        //         data.passwordConf=req.body.passwordConf;
-    
-        //         data.save(function(err, Person){
-        //             if(err)
-        //                 console.log(err);
-        //             else
-        //                 console.log('Success');
-        //                 res.send({"Success":"Password changed!"});
-        //         });
-        //     }else{
-        //         res.send({"Success":"Password does not matched! Both Password should be same."});
-        //     }
-        //     }
-        // });
+// Forget Password
+const forgetpassGet = (req: Request, res: Response, next: NextFunction) => {
+    res.render('forgotpass.ejs')
 }
+
+const forgetpassPost = (req: Request, res: Response, next: NextFunction) => {
+    const { email, npassword, cnpassword } = req.body
+    console.log(req.body);
+    User.findOne({ email }, (err: any, data: any) => {
+        console.log(data)
+        if (!data) {
+            console.log('Not registered email')
+            res.send({ "Success": "This email is not registered" })
+        }
+        else {
+            if (npassword != cnpassword) {
+                console.log('Password doesnt match')
+                res.send({ "Success": "Password doesnt match! Both password must match" })
+            }
+            else {
+                data.password = npassword
+                data.save((err: any, Person: any) => {
+                    if (err) {
+                        handleErrors(err)
+                    }
+                    else {
+                        console.log('Password Changed')
+                        res.send('Password Changed')
+                    }
+                })
+            }
+        }
+
+    })
+}
+
+// Edit profile GET method
+const editprofileGet = (req: Request, res: Response, next: NextFunction) => {
+    res.render('editprofile.ejs')
+}
+
+// Edit profile POST method
+const editprofilePost = (req: Request, res: Response, next: NextFunction) => {
+    const { username, email, password } = req.body
+
+        User.updateOne({ email }, {$set: {
+        username,
+        password
+        }}, (err: string) => {
+        if (err) {
+            handleErrors(err)
+        }
+        else{
+            console.log("Updated User : ");
+        }
+    })
+
+    // console.log(username, email, password)
+    // try {
+    //     User.updateOne({ email }, {$set: {
+    //         username,
+    //         password
+    //     }})
+    //     console.log("Updated User : ");
+    //     res.status(200).send('User updated successfully')
+    // }
+    // catch (e) {
+    //     console.log(e);
+    //     const errorsss = handleErrors(e)
+    //     res.status(400).json({errorsss})
+    }
+
+
+// User.updateOne({age:{$gte:5}}, 
+//     {name:"ABCD"}, function (err, docs) {
+//     if (err){
+//         console.log(err)
+//     }
+//     else{
+//         console.log("Updated Docs : ", docs);
+//     }
+// });
+
+// var user_id = '5eb985d440bd2155e4d788e2';
+// User.findByIdAndUpdate(user_id, { name: 'Gourav' },
+//                             function (err, docs) {
+//     if (err){
+//         console.log(err)
+//     }
+//     else{
+//         console.log("Updated User : ", docs);
+//     }
+// });
 
 export default {
     homePage,
     signupGet,
     signupPost,
     signinGet,
-    signinPost,
-    forgetPass,
-    logoutUser
+    signinPost, 
+    forgetpassPost,
+    logoutUser,
+    forgetpassGet,
+    editprofileGet,
+    editprofilePost
 }

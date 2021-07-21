@@ -1,12 +1,11 @@
 import express, { Express, Request, Response } from 'express'
 import mongoose from 'mongoose'
-import indexRoutes from './routes/indexRoutes'
 import authRoutes from './routes/authRoutes'
 import passport from 'passport'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
-const keys = require('../keys')
+const keys = require('./keys')
 const GoogleController = require('./controller/GoogleController')
 const LinkedinController = require('./controller/LinkedinController')
 
@@ -36,7 +35,6 @@ app.use(cookieParser())
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/', indexRoutes)
 app.use('/', authRoutes)
 
 // ALl other undefined Routes

@@ -2,41 +2,39 @@ import express, { Request, Response } from 'express'
 import controller from '../controller/userController'
 import passport from 'passport'
 const router = express.Router()
-import ensureAuth from '../middleware/auth'
-import checkUser from '../middleware/auth'
+import ri from '../middleware/auth'
 
-router.get('*', checkUser)
+// router.get('*', ri.ensureAuth)
 
-// Signup
-router.get('/signup', controller.signupGet)
-
-
-router.post('/signup', controller.signupPost)
+// Index Routes
+router.get('/', controller.homePage)
 
 // Login 
 router.get('/login', controller.signinGet)
 
 router.post('/login', controller.signinPost)
 
+// Signup
+router.get('/signup', controller.signupGet)
+
+router.post('/signup', controller.signupPost)
+
 // Forget Password
-router.post('/forgetpass', controller.forgetPass);
+router.get('/forgot-password', controller.forgetpassGet);
 
-
-
-// Index Routes
-// landing and Register
-router.get('/', (req: Request, res: Response) => {
-    res.render('index.ejs')
-})
-
-// Login Page
-router.get('/login', (req: Request, res: Response) => {
-    res.render('login.ejs')
-})
+router.post('/forgot-password', controller.forgetpassPost);
 
 // Dashboard page
+// router.get('/dashboard', (req: Request, res: Response) => {
+//     res.render('profile.ejs', { user: req.user })
+// })
+
+router.get('/dashboarded', ri.ensureAuth, (req: Request, res: Response) => {
+    res.render('dashboard.ejs')
+})
+
 router.get('/dashboard', (req: Request, res: Response) => {
-    res.send('Dashboard')
+    res.render('dashboard.ejs', { user: req.user })
 })
 
 // Profile page
@@ -44,11 +42,12 @@ router.get('/profile', (req: Request, res: Response) => {
     res.render('profile.ejs', { user: req.user })
 })
 
-router.get('/dashboard', (req: Request, res: Response) => {
-    res.render('profile.ejs', { user: req.user })
-})
+// Edit profile
+router.get('/editprofile', controller.editprofileGet);
 
+router.put('/editprofile', controller.editprofilePost);
 
+router.post('/forgot-password', controller.forgetpassPost);
 
 // Google login and authenticate  
 router.get('/auth/google', passport.authenticate('google', {
@@ -57,9 +56,9 @@ router.get('/auth/google', passport.authenticate('google', {
 
 router.get('/auth/google/redirect', passport.authenticate('google', { failureRedirect: '/' }),
  (req: Request, res: Response) => {
-    res.redirect('/profile')
+    res.redirect('/dashboard') 
 })
-
+ 
 // LinkedIn login and authentication
 router.get('/auth/linkedin', passport.authenticate('linkedin', {
     scope: ['r_emailaddress', 'r_liteprofile']
@@ -67,7 +66,7 @@ router.get('/auth/linkedin', passport.authenticate('linkedin', {
 
 router.get('/auth/linkedin/redirect', passport.authenticate('linkedin', { 
     failureRedirect: '/',
-    successRedirect: '/profile'})
+    successRedirect: '/dashboard'})
 )
 
 // Logout User

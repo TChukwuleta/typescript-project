@@ -6,8 +6,6 @@ export interface IUser extends Document {
     username: string
     email: string
     password: string
-    googleId?: string 
-    linkedinId?: string
 }
 
 export interface IModelUser extends Model<IUser> {
@@ -29,12 +27,6 @@ const userSchema: Schema = new Schema({
     password: {
         type: String,
         minlength: [8, 'Minimum password is 8 characters']
-    },
-    googleId: {
-        type: String
-    },
-    linkedinId: {
-        type: String
     }
 })
 
