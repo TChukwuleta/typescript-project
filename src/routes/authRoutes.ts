@@ -4,8 +4,6 @@ import passport from 'passport'
 const router = express.Router()
 import ri from '../middleware/auth'
 
-// router.get('*', ri.ensureAuth)
-
 // Index Routes
 router.get('/', controller.homePage)
 
@@ -25,28 +23,26 @@ router.get('/forgot-password', controller.forgetpassGet);
 router.post('/forgot-password', controller.forgetpassPost);
 
 // Dashboard page
-// router.get('/dashboard', (req: Request, res: Response) => {
-//     res.render('profile.ejs', { user: req.user })
-// })
-
 router.get('/dashboarded', ri.ensureAuth, (req: Request, res: Response) => {
-    res.render('dashboard.ejs')
-})
-
-router.get('/dashboard', (req: Request, res: Response) => {
-    res.render('dashboard.ejs', { user: req.user })
+    res.render('dashboarded.ejs')
 }) 
 
-// Profile page
-router.get('/profile', (req: Request, res: Response) => {
-    res.render('profile.ejs', { user: req.user })
-})
+router.get('/dashboard', (req: Request, res: Response) => {
+    res.render('dashboard.ejs', { user: req.user }) 
+}) 
 
 // Edit profile
 router.get('/editprofile', ri.checkUser, controller.editprofileGet);
 
 router.put('/editprofile', controller.editprofilePost);
 
+// Edit Socials profile
+router.get('/editprofilee', controller.editprofileSGet);
+
+router.put('/editprofilee', controller.editprofileSPost);
+
+
+// Forgot password
 router.post('/forgot-password', controller.forgetpassPost);
 
 // Google login and authenticate  

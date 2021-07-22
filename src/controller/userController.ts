@@ -111,12 +111,12 @@ const forgetpassPost = (req: Request, res: Response, next: NextFunction) => {
         console.log(data)
         if (!data) {
             console.log('Not registered email')
-            res.send({ "Success": "This email is not registered" })
+            res.send({ "Error": "This email is not registered" })
         }
         else {
             if (npassword != cnpassword) {
                 console.log('Password doesnt match')
-                res.send({ "Success": "Password doesnt match! Both password must match" })
+                res.send({ "Error": "Password doesnt match! Both password must match" })
             }
             else {
                 data.password = npassword
@@ -146,7 +146,30 @@ const editprofilePost = async (req: Request, res: Response, next: NextFunction) 
     try {
         const user = await User.updateOne({ email: req.body.email}, {$set: {
             username: req.body.username,
-            password: await bcrypt.hash(req.body.password, 10)
+            // password: await bcrypt.hash(req.body.password, 10)
+        }},{new: true})
+        console.log(user)
+        res.send(user)
+    }
+    catch(e) {
+        console.log(e)
+        res.send(e)
+    }
+}
+
+// Edit Social profile GET method
+const editprofileSGet = (req: Request, res: Response, next: NextFunction) => {
+    res.render('profile.ejs', { user: req.user })
+} 
+
+// Edit Social profile POST method
+const editprofileSPost = async (req: Request, res: Response, next: NextFunction) => {
+    // const { username, password } = req.body
+    try {
+        const user = await User.updateOne({ username: req.body.username}, {$set: {
+            username: req.body.username,
+            email: req.body.email,
+            // password: await bcrypt.hash(req.body.password, 10)
         }},{new: true})
         console.log(user)
         res.send(user)
@@ -167,5 +190,7 @@ export default {
     logoutUser,
     forgetpassGet,
     editprofileGet,
-    editprofilePost
+    editprofilePost,
+    editprofileSGet,
+    editprofileSPost
 }
