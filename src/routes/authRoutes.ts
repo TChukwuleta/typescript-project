@@ -27,17 +27,17 @@ router.get('/dashboarded', ri.ensureAuth, (req: Request, res: Response) => {
     res.render('dashboarded.ejs')
 }) 
 
-router.get('/dashboard', (req: Request, res: Response) => {
+router.get('/dashboard', ri.checkAuthentication, (req: Request, res: Response) => {
     res.render('dashboard.ejs', { user: req.user }) 
 }) 
 
 // Edit profile
-router.get('/editprofile', ri.checkUser, controller.editprofileGet);
+router.get('/editprofile', ri.ensureAuth, controller.editprofileGet);
 
 router.put('/editprofile', controller.editprofilePost);
-
+ 
 // Edit Socials profile
-router.get('/editprofilee', controller.editprofileSGet);
+router.get('/editprofilee', ri.checkAuthentication, controller.editprofileSGet);
 
 router.put('/editprofilee', controller.editprofileSPost);
 

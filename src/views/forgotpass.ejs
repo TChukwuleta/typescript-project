@@ -38,6 +38,8 @@
             <div class="card-title">
                 <form class="col s12" action="login">
 
+                    
+
                     <div class="row">
                         <div class="input-field col s12">
                           <label class="active" for="email">Email</label>
@@ -52,7 +54,7 @@
                           <label class="active" for="password">New Password</label>
                           <input id="npassword" type="password" class="validate" name="npassword">
                         </div>
-                        <div class="password error"></div>
+                        <div class="npassword error"></div>
                     </div>
 
                     <div class="row">
@@ -60,7 +62,7 @@
                           <label class="active" for="password">Confirm New Password</label>
                           <input id="cnpassword" type="password" class="validate" name="cnpassword">
                         </div>
-                        <div class="password error"></div>
+                        <div class="cnpassword error"></div>
                     </div>
 
                     <div class="row">
@@ -73,7 +75,7 @@
 
 
             <div class="card-action">
-                <a href="/login">
+                <a href="/login" class="indigo-text text-darken-4">
                   Login
                 </a>
             </div>
@@ -87,7 +89,8 @@
   <script>
     const form = document.querySelector('form')
     const emailError = document.querySelector('.email.error')
-    const passwordError = document.querySelector('.password.error')
+    const npasswordError = document.querySelector('.npassword.error')
+    const cnpasswordError = document.querySelector('.cnpassword.error')
 
 
     form.addEventListener('submit', async (e) => {
@@ -95,7 +98,7 @@
 
       // Reset errors
       emailError.textContent = ''
-      passwordError.textContent = ''
+    //   passwordError.textContent = ''
 
       // Get the values
       const email = form.email.value
@@ -109,20 +112,20 @@
           headers: ({ 'Content-Type': 'application/json' })
         })
         const data = await res.json()
-        console.log(data)
-        if (data.errorsss) {
-          emailError.textContent = data.errorsss.email
-          passwordError.textContent = data.errorsss.password
+        
+        if (data.Error) {
+            // console.log(data)
+            emailError.textContent = data.Error
         }
-        if (data.user) {
-          location.assign('/login')
+        else {
+            // console.log(email, npassword, cnpassword)
+            location.assign('/login')
         }
       }  
       catch (e) {
         console.log(e)
       }
   
-      console.log(email, password)
     })
   </script>
 

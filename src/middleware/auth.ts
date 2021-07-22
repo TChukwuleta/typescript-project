@@ -10,7 +10,7 @@ const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
         jwt.verify(token, keys.session.key, async (err: any, decodedToken: any) => {
             if (err) {
                 console.log(err.message)
-                res.redirect('/')
+                res.redirect('/login')
             }
             else {
                 console.log(decodedToken)
@@ -21,7 +21,16 @@ const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
         })
     }
     else {
-        res.redirect('/')
+        res.redirect('/login')
+    }
+}
+
+const checkAuthentication = (req: Request, res: Response, next: NextFunction) => {
+    if (req.isAuthenticated()){
+        next()
+    }
+    else {
+        res.redirect('/login')
     }
 }
 
@@ -51,5 +60,6 @@ const checkUser = (req: Request, res: Response, next: NextFunction) => {
 
 export default {
     ensureAuth,
-    checkUser
+    checkUser,
+    checkAuthentication 
 }

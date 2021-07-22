@@ -111,12 +111,12 @@ const forgetpassPost = (req: Request, res: Response, next: NextFunction) => {
         console.log(data)
         if (!data) {
             console.log('Not registered email')
-            res.send({ "Error": "This email is not registered" })
+            res.json({ "Error": "This email is not registered" })
         }
         else {
             if (npassword != cnpassword) {
                 console.log('Password doesnt match')
-                res.send({ "Error": "Password doesnt match! Both password must match" })
+                res.json({ "Error": "Password doesnt match! Both password must match" })
             }
             else {
                 data.password = npassword
@@ -126,7 +126,7 @@ const forgetpassPost = (req: Request, res: Response, next: NextFunction) => {
                     }
                     else {
                         console.log('Password Changed')
-                        res.send('Password Changed')
+                        res.json({ "Success": "Password Changed successfully" })
                     }
                 })
             }
