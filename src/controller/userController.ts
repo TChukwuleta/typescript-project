@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import User from '../models/userModel'
+import bcrypt from 'bcryptjs'
 const keys = require('../keys')
 import jwt from 'jsonwebtoken'
 
@@ -8,7 +9,7 @@ const handleErrors = (err: any) => {
     console.log(err.message, err.code)
     let errors = { email: '', password: '', username: '' }
 
-    // Incorrect email
+    // Incorrect email 
     if (err.message === 'Incorrect email') {
         errors.email = 'This email is not registered'
     }
@@ -39,7 +40,7 @@ const handleErrors = (err: any) => {
 // Token
 const createToken = (id: string) => {
     return jwt.sign({id}, keys.session.key, {
-        expiresIn: 24 * 60 * 60
+        expiresIn: 12 * 60 * 60
     })
 }
 
@@ -59,7 +60,7 @@ const signupPost = async (req: Request, res: Response) => {
     try {
         const user = await User.create({ username, email, password })
         const token = createToken(user._id)
-        res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) 
+        res.cookie('jwt', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 }) 
         res.status(201).json({user: user._id })
     }
     catch (e) {
@@ -137,60 +138,24 @@ const forgetpassPost = (req: Request, res: Response, next: NextFunction) => {
 // Edit profile GET method
 const editprofileGet = (req: Request, res: Response, next: NextFunction) => {
     res.render('editprofile.ejs')
-}
+} 
 
 // Edit profile POST method
-const editprofilePost = (req: Request, res: Response, next: NextFunction) => {
-    const { username, email, password } = req.body
-
-        User.updateOne({ email }, {$set: {
-        username,
-        password
-        }}, (err: string) => {
-        if (err) {
-            handleErrors(err)
-        }
-        else{
-            console.log("Updated User : ");
-        }
-    })
-
-    // console.log(username, email, password)
-    // try {
-    //     User.updateOne({ email }, {$set: {
-    //         username,
-    //         password
-    //     }})
-    //     console.log("Updated User : ");
-    //     res.status(200).send('User updated successfully')
-    // }
-    // catch (e) {
-    //     console.log(e);
-    //     const errorsss = handleErrors(e)
-    //     res.status(400).json({errorsss})
+const editprofilePost = async (req: Request, res: Response, next: NextFunction) => {
+    // const { username, password } = req.body
+    try {
+        const user = await User.updateOne({ email: req.body.email}, {$set: {
+            username: req.body.username,
+            password: await bcrypt.hash(req.body.password, 10)
+        }},{new: true})
+        console.log(user)
+        res.send(user)
     }
-
-
-// User.updateOne({age:{$gte:5}}, 
-//     {name:"ABCD"}, function (err, docs) {
-//     if (err){
-//         console.log(err)
-//     }
-//     else{
-//         console.log("Updated Docs : ", docs);
-//     }
-// });
-
-// var user_id = '5eb985d440bd2155e4d788e2';
-// User.findByIdAndUpdate(user_id, { name: 'Gourav' },
-//                             function (err, docs) {
-//     if (err){
-//         console.log(err)
-//     }
-//     else{
-//         console.log("Updated User : ", docs);
-//     }
-// });
+    catch(e) {
+        console.log(e)
+        res.send(e)
+    }
+}
 
 export default {
     homePage,

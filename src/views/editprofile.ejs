@@ -41,21 +41,21 @@
 
             <div class="row">
                 <div class="input-field col s12">
+                    <i class="material-icons prefix">email</i>
+                  <label class="active" for="email">Your Email</label>
+                  <input id="email" type="email" disabled value="<%= user.email %>" class="validate" name="email">
+                </div>
+                <div class="email error"></div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
                     <i class="material-icons prefix">person</i>
                   <label class="active" for="email">Your Username</label>
-                  <input id="username" type="text" class="validate" name="username">
+                  <input id="username" type="text" value="<%= user.username %>" class="validate" name="username">
                 </div>
                 <div class="username error"></div>
             </div>
-
-            <!-- <div class="row">
-                <div class="input-field col s12">
-                    <i class="material-icons prefix">email</i>
-                  <label class="active" for="email">Your Email</label>
-                  <input id="email" type="email" class="validate" name="email">
-                </div>
-                <div class="email error"></div>
-            </div> -->
 
             <div class="row">
                 <div class="input-field col s12">
@@ -97,7 +97,7 @@
 
           try {
               const res = await fetch('/editprofile', {
-                  method: 'POST',
+                  method: 'PUT',
                   body: JSON.stringify({ username, email, password }),
                   headers: ({ 'Content-Type': 'application/json' })
               })

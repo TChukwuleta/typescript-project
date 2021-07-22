@@ -35,7 +35,7 @@ router.get('/dashboarded', ri.ensureAuth, (req: Request, res: Response) => {
 
 router.get('/dashboard', (req: Request, res: Response) => {
     res.render('dashboard.ejs', { user: req.user })
-})
+}) 
 
 // Profile page
 router.get('/profile', (req: Request, res: Response) => {
@@ -43,7 +43,7 @@ router.get('/profile', (req: Request, res: Response) => {
 })
 
 // Edit profile
-router.get('/editprofile', controller.editprofileGet);
+router.get('/editprofile', ri.checkUser, controller.editprofileGet);
 
 router.put('/editprofile', controller.editprofilePost);
 
