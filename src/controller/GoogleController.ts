@@ -1,7 +1,6 @@
 import passport from 'passport'
 const GoogleStrategy = require('passport-google-oauth2').Strategy
 import Social from '../models/socialModel'
-const keys = require('../keys')
 
 
 passport.serializeUser((user: any, done: any) => {
@@ -16,9 +15,9 @@ passport.deserializeUser((id: string, done: any) => {
 
 
 passport.use(new GoogleStrategy({
-    clientID: keys.google.clientID,
-    clientSecret: keys.google.clientSecret,
-    callbackURL: keys.google.callbackURL,
+    clientID: process.env.gclientID,
+    clientSecret: process.env.gclientSecret,
+    callbackURL: process.env.gcallbackURL,
     passReqToCallback: true
 }, (request: any, accessToken: any, refreshToken: any, profile: any, done: any) => {
     console.log(profile)

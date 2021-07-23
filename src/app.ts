@@ -5,18 +5,17 @@ import passport from 'passport'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
-const keys = require('./keys')
 const GoogleController = require('./controller/GoogleController')
 const LinkedinController = require('./controller/LinkedinController')
 
 const app: Express = express()
 
 // Setup DB
-mongoose.connect(keys.mongodb.dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
     console.log('Nanana')
 })
-.catch((e) => {
+.catch((e) => { 
     console.log(e)
 }) 
 
