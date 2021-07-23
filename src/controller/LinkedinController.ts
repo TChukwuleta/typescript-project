@@ -1,7 +1,6 @@
 import passport from "passport";
 const LinkedinStrategy = require('passport-linkedin-oauth2').Strategy
 import Social from '../models/socialModel'
-const keys = require('../keys')
 
 
 passport.serializeUser((user: any, done: any) => {

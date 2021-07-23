@@ -15,7 +15,7 @@ mongoose.connect(process.env.dbURI, { useNewUrlParser: true, useUnifiedTopology:
 .then(() => {
     console.log('Nanana')
 })
-.catch((e) => { 
+.catch((e) => {
     console.log(e)
 }) 
 
