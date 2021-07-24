@@ -7,7 +7,9 @@ import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 const GoogleController = require('./controller/GoogleController')
 const LinkedinController = require('./controller/LinkedinController')
-require('dotenv').config()
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const app: Express = express()
 

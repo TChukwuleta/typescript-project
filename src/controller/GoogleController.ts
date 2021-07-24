@@ -1,6 +1,9 @@
 import passport from 'passport'
 const GoogleStrategy = require('passport-google-oauth2').Strategy
 import Social from '../models/socialModel'
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 
 passport.serializeUser((user: any, done: any) => {

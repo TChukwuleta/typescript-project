@@ -1,13 +1,15 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import User from '../models/userModel'
-const keys = require('../keys')
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.jwt
     // Check that JSON web token exists and is verified
     if (token) {
-        jwt.verify(token, 'JESUSisforeverybody', async (err: any, decodedToken: any) => {
+        jwt.verify(token, `${process.env.jkeys}`, async (err: any, decodedToken: any) => {
             if (err) {
                 console.log(err.message)
                 res.redirect('/login')
@@ -38,7 +40,7 @@ const checkAuthentication = (req: Request, res: Response, next: NextFunction) =>
 const checkUser = (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.jwt
     if (token){
-        jwt.verify(token, 'JESUSisforeverybody', async (err: any, decodedToken: any) => {
+        jwt.verify(token, `${process.env.jkeys}`, async (err: any, decodedToken: any) => {
             if (err) {
                 console.log(err.message)
                 res.locals.user = null
