@@ -4,8 +4,10 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "start": "ts-node src/app.ts",
+    "start": "node build/dist/app.js",
     "dev": "nodemon --config nodemon.json src/app.ts",
+    "build-ts": "tsc",
+    "heroku-postbuild": "npm run build-ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -35,7 +37,9 @@
     "passport-google-oauth2": "^0.2.0",
     "passport-linkedin-oauth2": "^2.0.0",
     "tsc": "^2.0.3",
-    "validator": "^13.6.0"
+    "validator": "^13.6.0",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -57,8 +61,7 @@
     "@types/passport-google-oauth2": "^0.1.4",
     "@types/passport-linkedin-oauth2": "^1.5.3",
     "@types/validator": "^13.6.3",
-    "nodemon": "^2.0.12",
-    "ts-node": "^10.1.0",
-    "typescript": "^4.3.5"
+    "nodemon": "^2.0.12"
   }
 }
+
