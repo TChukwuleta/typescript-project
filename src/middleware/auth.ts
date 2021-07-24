@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken' 
 import User from '../models/userModel'
 import * as dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config(); 
 
 const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.jwt

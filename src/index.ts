@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import authRoutes from './routes/authRoutes'
 import passport from 'passport'
 import session from 'express-session'
-import cookieParser from 'cookie-parser'
+import cookieParser from 'cookie-parser' 
 import bodyParser from 'body-parser'
 const GoogleController = require('./controller/GoogleController')
 const LinkedinController = require('./controller/LinkedinController')
