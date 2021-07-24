@@ -10,6 +10,10 @@
     "dev": "nodemon --config nodemon.json src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": "10.x",
+    "npm": "6.x"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
