@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import User from '../models/userModel'
 import bcrypt from 'bcryptjs'
-const keys = require('../keys')
+import * as dotenv from "dotenv";
+
+dotenv.config();
 import jwt from 'jsonwebtoken'
 
 // Handle errors
@@ -39,7 +41,7 @@ const handleErrors = (err: any) => {
 
 // Token
 const createToken = (id: string) => {
-    return jwt.sign({id}, keys.session.key, {
+    return jwt.sign({id},  `${process.env.jkeys}`, {
         expiresIn: 12 * 60 * 60
     })
 }
