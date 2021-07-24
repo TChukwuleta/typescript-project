@@ -11,7 +11,8 @@ const LinkedinController = require('./controller/LinkedinController')
 const app: Express = express()
 
 // Setup DB
-mongoose.connect(process.env.dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+const dbURI = 'mongodb+srv://TChukwuleta:Iamgreat97@cluster1.ejith.mongodb.net/finaleapp?retryWrites=true&w=majority'
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
     console.log('Nanana')
 })
