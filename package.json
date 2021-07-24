@@ -13,7 +13,7 @@
   "engines": {
     "node": "12.x",
     "npm": "6.x"
-},
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -64,4 +64,3 @@
     "nodemon": "^2.0.12"
   }
 }
-

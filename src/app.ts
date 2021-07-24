@@ -7,12 +7,12 @@ import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 const GoogleController = require('./controller/GoogleController')
 const LinkedinController = require('./controller/LinkedinController')
+require('dotenv').config()
 
 const app: Express = express()
 
 // Setup DB
-const dbURI = 'mongodb+srv://TChukwuleta:Iamgreat97@cluster1.ejith.mongodb.net/finaleapp?retryWrites=true&w=majority'
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`${process.env.START_MONGODB}${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}${process.env.END_MONGODB}`, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
     console.log('Nanana')
 })
