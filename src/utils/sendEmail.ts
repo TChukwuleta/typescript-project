@@ -6,7 +6,7 @@
 //             host: 'smtp.mailtrap.io',
 //             port: 2525,
 //             auth: {
-//                 user: '45831bc7370e35',
+//                 user: '45831bc7370e35', 
 //                 pass: 'b57b363d526a41'
 //             }
 //         })

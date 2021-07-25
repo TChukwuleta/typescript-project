@@ -12,7 +12,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const app: Express = express()
-
+ 
 // Setup DB
 mongoose.connect(`${process.env.START_MONGODB}${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}${process.env.END_MONGODB}`, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
