@@ -1,1 +1,1 @@
-web: ts-node build/dist/index.ts 
+web: node build/dist/index.js
