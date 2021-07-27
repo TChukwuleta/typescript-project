@@ -4,7 +4,9 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "start": "ts-node build/dist/index.ts",
+    "start": "node build/dist/index.js",
+    "heroku-prebuild": "npm install",
+    "build": "tsc -p .",
     "dev": "nodemon --exec ts-node src/index.ts"
   },
   "engines": {
