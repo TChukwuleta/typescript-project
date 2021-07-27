@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "start": "ts-node build/dist/index.js",
+    "start": "ts-node build/dist/index.ts",
     "dev": "nodemon --exec ts-node src/index.ts"
   },
   "engines": {
