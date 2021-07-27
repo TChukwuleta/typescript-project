@@ -8,7 +8,7 @@ import bodyParser from 'body-parser'
 const GoogleController = require('./controller/GoogleController')
 const LinkedinController = require('./controller/LinkedinController')
 import * as dotenv from "dotenv";
-
+ 
 dotenv.config();
   
 const app: Express = express()

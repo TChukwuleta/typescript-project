@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Story Books</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <style>
+    .linkedin {
+      background-color: #0073b1 !important;
+      color: #fff !important;
+    }
+    .fa-linkedin-f:before,
+    .fa-linkedin:before { 
+      content: "\f0e1";
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="/dashboarded" class="brand-logo">Story Books</a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+        <br><br>
+      <div class="row center">
+        <div class="col s6 offset-s3">
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title"><b>Tell your stories, create your memories</b></span>
+            </div>
+
+            <div class="card-title">
+                <form class="col s12" action="login">
+                    <!-- <div class="row">
+                        <div class="input-field col s12">
+                          <label class="active" for="username">Username</label>
+                          <input id="username" type="text" class="validate" name="username">
+                        </div>
+                    </div> -->
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <label class="active" for="email">Email</label>
+                          <input id="email" type="email" class="validate" name="email">
+                        </div>
+                        <div class="email error"></div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <label class="active" for="password">Password</label>
+                          <input id="password" type="password" class="validate" name="password">
+                        </div>
+                        <div class="password error"></div>
+                    </div>
+
+
+                    <div class="row">
+                        <button class="btn waves-effect waves-light" style="font-size: 25px;" type="submit">Sign In 
+                        </button> &nbsp;
+                        <a href="/signup" style="font-size: 15px;">
+                          No account? Register
+                        </a>
+                    </div>
+                  
+                </form>
+              </div>
+              <hr>
+
+            <div class="card-action">
+              <a href="/auth/linkedin" class="waves-effect waves-light btn social linkedin">
+                <i class="fa fa-linkedin"></i> Sign in with Linkedin
+              </a>
+            </div>
+            <div class="card-action">
+              <a href="/auth/google" class="waves-effect waves-light btn social google">
+                <i class="fa fa-google"></i> Sign in with Google
+              </a>
+            </div>
+
+            <div class="card-action">
+                <a href="/forgot-password" class="indigo-text text-darken-4">
+                  Forgot Password
+                </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.querySelector('form')
+    const emailError = document.querySelector('.email.error')
+    const passwordError = document.querySelector('.password.error')
+
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      // Reset errors
+      emailError.textContent = ''
+      passwordError.textContent = ''
+
+      // Get the values
+      const email = form.email.value
+      const password = form.password.value
+  
+      try {
+        const res = await fetch('/login', {
+          method: 'POST',
+          body: JSON.stringify({ email, password }),
+          headers: ({ 'Content-Type': 'application/json' })
+        })
+        const data = await res.json()
+        console.log(data)
+        if (data.errorsss) {
+          emailError.textContent = data.errorsss.email
+          passwordError.textContent = data.errorsss.password
+        }
+        if (data.user) {
+          location.assign('/dashboarded')
+        }
+      }  
+      catch (e) {
+        console.log(e)
+      }
+  
+      console.log(email, password)
+    })
+  </script>
+
+</body>
+
+
+</html>

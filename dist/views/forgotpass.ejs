@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Story Books</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <style>
+    .linkedin {
+      background-color: #0073b1 !important;
+      color: #fff !important;
+    }
+    .fa-linkedin-f:before,
+    .fa-linkedin:before {
+      content: "\f0e1";
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href=/dashboarded" class="brand-logo">Story Books</a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+        <br><br>
+      <div class="row center">
+        <div class="col s6 offset-s3">
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title"><b>Can't tell your story because you forgot your password? We got you</b></span>
+            </div>
+
+            <div class="card-title">
+                <form class="col s12" action="login">
+
+                    
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <label class="active" for="email">Email</label>
+                          <input id="email" type="email" class="validate" name="email">
+                        </div>
+                        <div class="email error"></div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <label class="active" for="password">New Password</label>
+                          <input id="npassword" type="password" class="validate" name="npassword">
+                        </div>
+                        <div class="npassword error"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <label class="active" for="password">Confirm New Password</label>
+                          <input id="cnpassword" type="password" class="validate" name="cnpassword">
+                        </div>
+                        <div class="cnpassword error"></div>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn waves-effect waves-light" style="font-size: 25px;" type="submit">Change Password
+                        </button> &nbsp;
+                    </div>
+                  
+                </form>
+              </div>
+
+
+            <div class="card-action">
+                <a href="/login" class="indigo-text text-darken-4">
+                  Login
+                </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.querySelector('form')
+    const emailError = document.querySelector('.email.error')
+    const npasswordError = document.querySelector('.npassword.error')
+    const cnpasswordError = document.querySelector('.cnpassword.error')
+
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      // Reset errors
+      emailError.textContent = ''
+    //   passwordError.textContent = ''
+
+      // Get the values
+      const email = form.email.value
+      const npassword = form.npassword.value
+      const cnpassword = form.cnpassword.value
+  
+      try {
+        const res = await fetch('/forgot-password', {
+          method: 'POST',
+          body: JSON.stringify({ email, npassword, cnpassword }),
+          headers: ({ 'Content-Type': 'application/json' })
+        })
+        const data = await res.json()
+        
+        if (data.Error) {
+            // console.log(data)
+            emailError.textContent = data.Error
+        }
+        else {
+            // console.log(email, npassword, cnpassword)
+            location.assign('/login')
+        }
+      }  
+      catch (e) {
+        console.log(e)
+      }
+  
+    })
+  </script>
+
+</body>
+
+
+</html>
