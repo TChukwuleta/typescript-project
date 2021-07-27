@@ -44,7 +44,7 @@ const createToken = (id: string) => {
     return jwt.sign({id},  `${process.env.jkeys}`, {
         expiresIn: 12 * 60 * 60
     })
-}
+} 
 
 // Index Route controller
 const homePage = (req: Request, res: Response) => {
