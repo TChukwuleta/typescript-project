@@ -10,7 +10,7 @@ const LinkedinController = require('./controller/LinkedinController')
 import * as dotenv from "dotenv";
 
 dotenv.config();
-
+  
 const app: Express = express()
  
 // Setup DB
