@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import User from '../models/userModel'
+import Token from '../models/tokenModel'
 import bcrypt from 'bcryptjs'
+import joi from 'joi'
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -45,6 +47,16 @@ const createToken = (id: string) => {
         expiresIn: 12 * 60 * 60
     })
 } 
+
+// Validation for reset password
+const resetSchema = joi.object({
+    email: joi.string().email().required()
+})
+
+const rpSchema = joi.object({
+    password: joi.string().required()
+})
+
 
 // Index Route controller
 const homePage = (req: Request, res: Response) => {
@@ -137,18 +149,64 @@ const forgetpassPost = (req: Request, res: Response, next: NextFunction) => {
     })
 }
 
+// Forget password with email token verification
+const forgetttpassPost = async (req: Request, res: Response, next: NextFunction) => {
+    const { error } =  resetSchema.validate(req.body)
+    if (error) {
+        return res.status(400).send(error.details[0].message)
+    }
+    const user = await User.findOne({ email: req.body.email })
+    if (!user) {
+        return res.status(400).json({ "Error": "Uawe with given mail doesn't exist" })
+    }
+    
+}
+
+const resetpassPost = (req: Request, res: Response, next: NextFunction) => {
+    const { email, npassword, cnpassword } = req.body
+    console.log(req.body);
+    User.findOne({ email }, (err: any, data: any) => {
+        console.log(data)
+        if (!data) {
+            console.log('Not registered email')
+            res.json({ "Error": "This email is not registered" })
+        }
+        else {
+            if (npassword != cnpassword) {
+                console.log('Password doesnt match')
+                res.json({ "Error": "Password doesnt match! Both password must match" })
+            }
+            else {
+                data.password = npassword
+                data.save((err: any, Person: any) => {
+                    if (err) {
+                        handleErrors(err)
+                    }
+                    else {
+                        console.log('Password Changed')
+                        res.json({ "Success": "Password Changed successfully" })
+                    }
+                })
+            }
+        }
+
+    })
+}
+
 // Edit profile GET method
 const editprofileGet = (req: Request, res: Response, next: NextFunction) => {
     res.render('editprofile.ejs')
 } 
-
+ 
 // Edit profile POST method
 const editprofilePost = async (req: Request, res: Response, next: NextFunction) => {
     // const { username, password } = req.body
     try {
         const user = await User.updateOne({ email: req.body.email}, {$set: {
             username: req.body.username,
-            // password: await bcrypt.hash(req.body.password, 10)
+            mobile: req.body.mobile,
+            bio: req.body.bio,
+            summary: req.body.summary
         }},{new: true})
         console.log(user)
         res.send(user)
@@ -171,7 +229,7 @@ const editprofileSPost = async (req: Request, res: Response, next: NextFunction)
         const user = await User.updateOne({ username: req.body.username}, {$set: {
             username: req.body.username,
             email: req.body.email,
-            // password: await bcrypt.hash(req.body.password, 10)
+            mobile: req.body.mobile
         }},{new: true})
         console.log(user)
         res.send(user)
@@ -181,7 +239,7 @@ const editprofileSPost = async (req: Request, res: Response, next: NextFunction)
         res.send(e)
     }
 }
-
+ 
 export default {
     homePage,
     signupGet,
@@ -194,5 +252,7 @@ export default {
     editprofileGet,
     editprofilePost,
     editprofileSGet,
-    editprofileSPost
+    editprofileSPost,
+    forgetttpassPost,
+    resetpassPost
 }

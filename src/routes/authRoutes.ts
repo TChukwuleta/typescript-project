@@ -19,13 +19,17 @@ router.post('/signup', controller.signupPost)
 
 // Forget Password
 router.get('/forgot-password', controller.forgetpassGet);
-
 router.post('/forgot-password', controller.forgetpassPost);
+
+router.post('/forget-password', controller.forgetttpassPost);
+
+// Password Reset
+router.post('/reset-password', controller.resetpassPost);
 
 // Dashboard page
 router.get('/dashboarded', ri.ensureAuth, (req: Request, res: Response) => {
     res.render('dashboarded.ejs')
-}) 
+})  
 
 router.get('/dashboard', ri.checkAuthentication, (req: Request, res: Response) => {
     res.render('dashboard.ejs', { user: req.user }) 
@@ -40,10 +44,6 @@ router.put('/editprofile', controller.editprofilePost);
 router.get('/editprofilee', ri.checkAuthentication, controller.editprofileSGet);
 
 router.put('/editprofilee', controller.editprofileSPost);
-
-
-// Forgot password
-router.post('/forgot-password', controller.forgetpassPost);
 
 // Google login and authenticate  
 router.get('/auth/google', passport.authenticate('google', {

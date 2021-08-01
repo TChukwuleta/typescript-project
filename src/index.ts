@@ -23,8 +23,10 @@ mongoose.connect(`${process.env.START_MONGODB}${process.env.MONGODB_USERNAME}:${
 }) 
 
 //Template engine
+app.use(express.static(__dirname + '/public'))
 app.set('views', __dirname + '/views') 
 app.set('view engine', 'ejs')
+app.use( express.static( "public" ) )
 
 // Middleware
 app.use(bodyParser.json())
