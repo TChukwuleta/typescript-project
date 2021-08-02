@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express'
 import controller from '../controller/userController'
+import jwt from 'jsonwebtoken'
+import Test from '../models/testModel'
 import passport from 'passport'
 const router = express.Router()
 import ri from '../middleware/auth'
@@ -55,6 +57,33 @@ router.get('/auth/google/redirect', passport.authenticate('google', {
  (req: Request, res: Response) => {
     res.redirect('/dashboard') 
 })
+
+
+// Jerryyyyyyyy
+router.get('/auth/google/redirect', passport.authenticate('google', { 
+    failureRedirect: '/' }),
+ (req: Request, res: Response) => {
+    res.redirect('/dash') 
+})
+
+router.get('/dash', ri.checkAuthentication, async (req: Request, res: Response) => {
+    try {
+        const user = await Test.create({ 
+            username: req.user.username, 
+            email: req.user.email, 
+        })
+        const createToken = jwt.sign({id: req.user},`${process.env.jkeys}`, {
+            expiresIn: 12 * 60 * 60
+        })
+        res.cookie('jwt', createToken, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 }) 
+        res.status(201).json({user: user._id })
+    }
+    catch (e) {
+        console.log(e)
+    }
+    res.render('dashboard.ejs', { user: req.user }) 
+}) 
+
  
 // LinkedIn login and authentication
 router.get('/auth/linkedin', passport.authenticate('linkedin', {
