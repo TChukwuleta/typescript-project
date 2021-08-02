@@ -50,7 +50,8 @@ router.get('/auth/google', passport.authenticate('google', {
     scope: ['email', 'profile']
 }))
 
-router.get('/auth/google/redirect', passport.authenticate('google', { failureRedirect: '/' }),
+router.get('/auth/google/redirect', passport.authenticate('google', { 
+    failureRedirect: '/' }),
  (req: Request, res: Response) => {
     res.redirect('/dashboard') 
 })

@@ -30,6 +30,8 @@
     <div class="row">
       <div class="col s12 l5">
         <h2 class="indigo-text text-darken-4"><%= user.username %></h2>
+        <h4><%= user.bio %></h4>
+        <h4><%= user.email %></h4>
         <p>Once upon a time, up an enormous green beanstalk in the clouds which hung over Middleton, Leeds there was a mystical, mysterious fairy tale land. </p>
         <p>This fairy tale land wasn’t like any other fairy tale land as it was dark and gloomy.</p>
         <p>One day some terrified fairies came scampering down the huge beanstalk and asked for some help from the children in a school nearby.</p>
@@ -38,39 +40,57 @@
       <div class="col s12 l5 offset-l2">
         <form>
 
-            <div class="row">
-                <div class="input-field col s12">
-                    <i class="material-icons prefix">email</i>
-                  <label class="active" for="email">Your Email</label>
-                  <input id="email" type="email" disabled value="<%= user.email %>" class="validate" name="email">
-                </div>
-                <div class="email error"></div>
-            </div>
-
-            <div class="row">
-                <div class="input-field col s12">
-                    <i class="material-icons prefix">person</i>
-                  <label class="active" for="email">Your Username</label>
-                  <input id="username" type="text" disabled value="<%= user.username %>" class="validate" name="username">
-                </div>
-                <div class="username error"></div>
-            </div>
-
-            <div class="row">
+          <div class="row">
               <div class="input-field col s12">
-                  <i class="material-icons prefix">call</i>
-                <label class="active" for="email">Phone Number</label>
-                <input id="mobile" type="text" class="validate" name="mobile">
+                  <i class="material-icons prefix">email</i>
+                <label class="active" for="email">Your Email</label>
+                <input id="email" type="email" disabled value="<%= user.email %>" class="validate" name="email">
               </div>
-              <div class="mobile error"></div>
-            </div>
-
-          <div class="button">
-            <button class="btn waves-effect waves-dark" style="font-size: 25px;" type="submit">Update Profile
-            </button>
+              <div class="email error"></div>
           </div>
 
-        </form>
+          <div class="row">
+              <div class="input-field col s12">
+                  <i class="material-icons prefix">person</i>
+                <label class="active" for="username">Your Username</label>
+                <input id="username" type="text" disabled value="<%= user.username %>" class="validate" name="username">
+              </div>
+              <div class="username error"></div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">note</i>
+              <label class="active" for="bio">bio</label>
+              <input id="bio" type="text" value="<%= user.bio %>" class="validate" name="bio">
+            </div>
+            <div class="bio error"></div>
+         </div>
+
+          <div class="row">
+              <div class="input-field col s12">
+                  <i class="material-icons prefix">call</i>
+                <label class="active" for="mobile">Mobile Number</label>
+                <input id="mobile" type="text" value="<%= user.mobile %>" class="validate" name="mobile">
+              </div>
+              <div class="mobile error"></div>
+          </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">data</i>
+              <label class="active" for="summary">Summary</label>
+              <input id="summary" type="text" value="<%= user.summary %>" class="validate" name="summary">
+            </div>
+            <div class="summary error"></div>
+        </div>
+
+        <div class="button">
+          <button class="btn waves-effect waves-dark" style="font-size: 25px;" type="submit">Update Profile
+          </button>
+        </div>
+
+      </form>
       </div>
     </div>
   </section>
@@ -79,7 +99,9 @@
       const form = document.querySelector('form')
       const usernameError = document.querySelector('.username.error')
       const emailError = document.querySelector('.email.error')
-      // const passwordError = document.querySelector('.password.error')
+      const mobileError = document.querySelector('.mobile.error')
+      const bioError = document.querySelector('.bio.error')
+      const summaryError = document.querySelector('.summary.error')
 
       form.addEventListener('submit', async (e) => {
           e.preventDefault()
@@ -88,16 +110,20 @@
           usernameError.textContent = ''
           emailError.textContent = ''
           mobileError.textContent = ''
+          bioError.textContent = ''
+          summaryError.textContent = ''
  
           // Get the values
           const username = form.username.value
           const email = form.email.value
           const mobile = form.mobile.value 
+          const bio = form.bio.value
+          const summary = form.summary.value
 
           try {
               const res = await fetch('/editprofilee', {
                   method: 'PUT',
-                  body: JSON.stringify({ username, email, mobile }),
+                  body: JSON.stringify({ username, email, mobile, bio, summary }),
                   headers: ({ 'Content-Type': 'application/json' })
               })
               const data = await res.json()

@@ -1,11 +1,13 @@
 import mongoose, { Schema, Document, Model } from 'mongoose'
 
 export interface ISUser extends Document {
-    username: string
+    username: string 
     email: string
     googleId?: string 
     linkedinId?: string
-    mobile?: string 
+    mobile?: string
+    bio?: string
+    summary?: string
 }
 
 const socialSchema: Schema = new Schema({
@@ -13,6 +15,9 @@ const socialSchema: Schema = new Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String
+    }, 
     googleId: {
         type: String
     }, 
@@ -20,6 +25,12 @@ const socialSchema: Schema = new Schema({
         type: String
     },
     mobile: {
+        type: String
+    },
+    bio: {
+        type: String
+    },
+    summary: {
         type: String
     }
 })

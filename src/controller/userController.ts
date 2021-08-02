@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import User from '../models/userModel'
-import Token from '../models/tokenModel'
+import Social from '../models/socialModel'
 import bcrypt from 'bcryptjs'
 import joi from 'joi'
 import * as dotenv from "dotenv";
@@ -65,7 +65,7 @@ const homePage = (req: Request, res: Response) => {
 
 // Sign up GET controller
 const signupGet = (req: Request, res: Response) => {
-    res.render('index.ejs')
+    res.render('index.ejs') 
 }
 
 // Sign up POST controller
@@ -200,7 +200,6 @@ const editprofileGet = (req: Request, res: Response, next: NextFunction) => {
  
 // Edit profile POST method
 const editprofilePost = async (req: Request, res: Response, next: NextFunction) => {
-    // const { username, password } = req.body
     try {
         const user = await User.updateOne({ email: req.body.email}, {$set: {
             username: req.body.username,
@@ -224,12 +223,12 @@ const editprofileSGet = (req: Request, res: Response, next: NextFunction) => {
 
 // Edit Social profile POST method
 const editprofileSPost = async (req: Request, res: Response, next: NextFunction) => {
-    // const { username, password } = req.body
     try {
-        const user = await User.updateOne({ username: req.body.username}, {$set: {
+        const user = await Social.updateOne({ email: req.body.email}, {$set: {
             username: req.body.username,
-            email: req.body.email,
-            mobile: req.body.mobile
+            mobile: req.body.mobile,
+            bio: req.body.bio,
+            summary: req.body.summary
         }},{new: true})
         console.log(user)
         res.send(user)
@@ -244,7 +243,7 @@ export default {
     homePage,
     signupGet,
     signupPost,
-    signinGet,
+    signinGet, 
     signinPost, 
     forgetpassPost,
     logoutUser,

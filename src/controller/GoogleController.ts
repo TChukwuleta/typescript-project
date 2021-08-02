@@ -35,9 +35,12 @@ passport.use(new GoogleStrategy({
         else {
             // Create user in the DB
             new Social({
-                username: profile.displayName,
+                username: profile.displayName, 
                 googleId: profile.id,
-                // email: profile.email
+                email: profile.email,
+                mobile: '',
+                bio: '',
+                summary: ''
             }).save()
             .then((newUser) => {
                 console.log('New User created: ' + newUser)
