@@ -76,6 +76,15 @@ var userSchema = new mongoose_1.Schema({
     password: {
         type: String,
         minlength: [8, 'Minimum password is 8 characters']
+    },
+    mobile: {
+        type: String
+    },
+    bio: {
+        type: String
+    },
+    summary: {
+        type: String
     }
 });
 // Fire a function before user is saved to the database

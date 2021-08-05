@@ -28,7 +28,6 @@ var authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 var passport_1 = __importDefault(require("passport"));
 var express_session_1 = __importDefault(require("express-session"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
-var body_parser_1 = __importDefault(require("body-parser"));
 var GoogleController = require('./controller/GoogleController');
 var LinkedinController = require('./controller/LinkedinController');
 var dotenv = __importStar(require("dotenv"));
@@ -43,16 +42,18 @@ mongoose_1.default.connect("" + process.env.START_MONGODB + process.env.MONGODB_
     console.log(e);
 });
 //Template engine
+app.use(express_1.default.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+app.use(express_1.default.static("public"));
 // Middleware
-app.use(body_parser_1.default.json());
-app.use(body_parser_1.default.urlencoded({ extended: false }));
+app.use(cookie_parser_1.default());
+app.use(express_1.default.urlencoded({ extended: false }));
+app.use(express_1.default.json());
 app.use(express_session_1.default({
     secret: 'NoMoreASecret',
     resave: true
 }));
-app.use(cookie_parser_1.default());
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 app.use('/', authRoutes_1.default);

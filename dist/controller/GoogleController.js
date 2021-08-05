@@ -41,13 +41,13 @@ passport_1.default.use(new GoogleStrategy({
     callbackURL: "" + process.env.gcallbackURL,
     passReqToCallback: true
 }, function (request, accessToken, refreshToken, profile, done) {
-    console.log(profile);
+    // console.log(profile)
     // Check if the user already exists in the database
     socialModel_1.default.findOne({ googleId: profile.id })
         .then(function (currentUser) {
         if (currentUser) {
             // User is in DB
-            console.log('User is: ', currentUser);
+            // console.log('User is: ', currentUser)
             done(null, currentUser);
         }
         else {
@@ -55,10 +55,10 @@ passport_1.default.use(new GoogleStrategy({
             new socialModel_1.default({
                 username: profile.displayName,
                 googleId: profile.id,
-                // email: profile.email
+                email: profile.email
             }).save()
                 .then(function (newUser) {
-                console.log('New User created: ' + newUser);
+                // console.log('New User created: ' + newUser)
                 done(null, newUser);
             });
         }

@@ -20,7 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = __importStar(require("mongoose"));
-var socialSchema = new mongoose_1.Schema({
+var testSchema = new mongoose_1.Schema({
     username: {
         type: String,
         required: true
@@ -28,12 +28,15 @@ var socialSchema = new mongoose_1.Schema({
     email: {
         type: String
     },
-    googleId: {
+    mobile: {
         type: String
     },
-    linkedinId: {
+    bio: {
+        type: String
+    },
+    summary: {
         type: String
     }
 });
-var Social = mongoose_1.default.model('social', socialSchema);
-exports.default = Social;
+var Test = mongoose_1.default.model('test', testSchema);
+exports.default = Test;

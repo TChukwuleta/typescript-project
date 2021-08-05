@@ -59,6 +59,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var userModel_1 = __importDefault(require("../models/userModel"));
+var testModel_1 = __importDefault(require("../models/testModel"));
+var joi_1 = __importDefault(require("joi"));
 var dotenv = __importStar(require("dotenv"));
 dotenv.config();
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -96,6 +98,13 @@ var createToken = function (id) {
         expiresIn: 12 * 60 * 60
     });
 };
+// Validation for reset password
+var resetSchema = joi_1.default.object({
+    email: joi_1.default.string().email().required()
+});
+var rpSchema = joi_1.default.object({
+    password: joi_1.default.string().required()
+});
 // Index Route controller
 var homePage = function (req, res) {
     res.render('home.ejs');
@@ -150,6 +159,8 @@ var signinPost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 token = createToken(user._id);
                 res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
                 res.status(200).json({ user: user.id });
+                // console.log(req.body)
+                console.log(req.user);
                 return [3 /*break*/, 4];
             case 3:
                 e_2 = _b.sent();
@@ -201,6 +212,55 @@ var forgetpassPost = function (req, res, next) {
         }
     });
 };
+// Forget password with email token verification
+var forgetttpassPost = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var error, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                error = resetSchema.validate(req.body).error;
+                if (error) {
+                    return [2 /*return*/, res.status(400).send(error.details[0].message)];
+                }
+                return [4 /*yield*/, userModel_1.default.findOne({ email: req.body.email })];
+            case 1:
+                user = _a.sent();
+                if (!user) {
+                    return [2 /*return*/, res.status(400).json({ "Error": "Uawe with given mail doesn't exist" })];
+                }
+                return [2 /*return*/];
+        }
+    });
+}); };
+var resetpassPost = function (req, res, next) {
+    var _a = req.body, email = _a.email, npassword = _a.npassword, cnpassword = _a.cnpassword;
+    console.log(req.body);
+    userModel_1.default.findOne({ email: email }, function (err, data) {
+        console.log(data);
+        if (!data) {
+            console.log('Not registered email');
+            res.json({ "Error": "This email is not registered" });
+        }
+        else {
+            if (npassword != cnpassword) {
+                console.log('Password doesnt match');
+                res.json({ "Error": "Password doesnt match! Both password must match" });
+            }
+            else {
+                data.password = npassword;
+                data.save(function (err, Person) {
+                    if (err) {
+                        handleErrors(err);
+                    }
+                    else {
+                        console.log('Password Changed');
+                        res.json({ "Success": "Password Changed successfully" });
+                    }
+                });
+            }
+        }
+    });
+};
 // Edit profile GET method
 var editprofileGet = function (req, res, next) {
     res.render('editprofile.ejs');
@@ -214,7 +274,9 @@ var editprofilePost = function (req, res, next) { return __awaiter(void 0, void 
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, userModel_1.default.updateOne({ email: req.body.email }, { $set: {
                             username: req.body.username,
-                            // password: await bcrypt.hash(req.body.password, 10)
+                            mobile: req.body.mobile,
+                            bio: req.body.bio,
+                            summary: req.body.summary
                         } }, { new: true })];
             case 1:
                 user = _a.sent();
@@ -233,6 +295,7 @@ var editprofilePost = function (req, res, next) { return __awaiter(void 0, void 
 // Edit Social profile GET method
 var editprofileSGet = function (req, res, next) {
     res.render('profile.ejs', { user: req.user });
+    console.log(req.user);
 };
 // Edit Social profile POST method
 var editprofileSPost = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -241,10 +304,11 @@ var editprofileSPost = function (req, res, next) { return __awaiter(void 0, void
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, userModel_1.default.updateOne({ username: req.body.username }, { $set: {
+                return [4 /*yield*/, testModel_1.default.updateOne({ email: req.body.email }, { $set: {
                             username: req.body.username,
-                            email: req.body.email,
-                            // password: await bcrypt.hash(req.body.password, 10)
+                            mobile: req.body.mobile,
+                            bio: req.body.bio,
+                            summary: req.body.summary
                         } }, { new: true })];
             case 1:
                 user = _a.sent();
@@ -260,6 +324,35 @@ var editprofileSPost = function (req, res, next) { return __awaiter(void 0, void
         }
     });
 }); };
+var sssP = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var reqUser;
+    return __generator(this, function (_a) {
+        reqUser = req.user;
+        testModel_1.default.findOne({ email: reqUser.email }, function (err, data) {
+            if (data) {
+                console.log('Userrrrr is: ', data);
+                res.render('dashboard.ejs', { user: data });
+            }
+            else {
+                var user = new testModel_1.default({
+                    email: reqUser.email,
+                    username: reqUser.username
+                });
+                user.save()
+                    .then(function (he) {
+                    console.log('Userrr is: ', he);
+                    var token = createToken(he._id);
+                    res.cookie('jwt', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 });
+                    res.render('dashboard.ejs', { user: he });
+                })
+                    .catch(function (e) {
+                    console.log(e);
+                });
+            }
+        });
+        return [2 /*return*/];
+    });
+}); };
 exports.default = {
     homePage: homePage,
     signupGet: signupGet,
@@ -272,5 +365,8 @@ exports.default = {
     editprofileGet: editprofileGet,
     editprofilePost: editprofilePost,
     editprofileSGet: editprofileSGet,
-    editprofileSPost: editprofileSPost
+    editprofileSPost: editprofileSPost,
+    forgetttpassPost: forgetttpassPost,
+    resetpassPost: resetpassPost,
+    sssP: sssP
 };

@@ -1,48 +1,121 @@
-<!doctype html>
 <html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
 
-<head>  
-  <title>Story Time</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-  <style>
-    .card:hover {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-      margin-bottom: 54px;
-    }
-  </style>
-</head>
-<body>
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <title>Story time</title>
+    <style>
+        .icon-block {
+        padding: 0 15px;
+        }
+        .icon-block .material-icons {
+            font-size: inherit;
+        }
+
+    </style>
+  </head>
+  <body>
     <nav class="light-blue lighten-1" role="navigation">
       <div class="nav-wrapper container">
-        <a id="logo-container" href="/dashboard" class="brand-logo">Story Time</a>
-        <a href="/logout" class="right">Logout</a>
+          <a id="logo-container" href="/dashboard" class="brand-logo">Story Books</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="/logout">Logout</a></li>
+        </ul>
       </div>
     </nav>
     <div class="section no-pad-bot" id="index-banner">
       <div class="container">
+        
         <br><br>
+        <h1 class="header center orange-text"><b><%= user.username %></b></h1>
         <div class="row center">
-          <div class="col s12">
-            <div class="card">
-              <div class="card-content blue lighten-3">
-                <span class="card-title white-text"><strong><i class="large material-icons">person</i>
-                  </strong></span>
-                </div>
-                <div class="card-action">
-                  <h5><b><%= user.username %></b></h5>
-                  <!-- <p><strong>Google id</strong>: <%= user.id %></p> -->
-                  <p>Aye Captain, Welcome Aboard</p>
-                  <a href="/editprofilee" class="indigo-text text-darken-4">
-                    Edit your profile, Captain
-                  </a>
-                </div>
-              </div>
+          <h5 class="header col s12 light">Aye Captain, Welcome Aboard</h5>
+        </div>
+        <div class="row center">
+          <a href="/editprofilee" id="download-button" class="btn-large waves-effect waves-light orange">Edit Profile</a>
+        </div>
+        <br><br>
+      </div>
+    </div>
+    <div class="container">
+      <div class="section">
+        <!--   Icon Section   -->
+        <div class="row">
+          <div class="col s12 m4">
+            <div class="icon-block">
+              <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+              <h5 class="center">Get Stories at fast speed</h5>
+              <p class="light">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue leo quis vestibulum tincidunt. Vivamus at vulputate dui. Sed sed dolor sagittis, consectetur 
+                nisl et, vehicula libero. Donec scelerisque velit consequat mauris sagittis elementum. In faucibus nisi leo, quis consequat ex semper at. Mauris a efficitur metus. 
+                Nulla nec ligula id risus feugiat interdum. Aliquam erat volutpat. Orci varius 
+                natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse quis dictum elit. Nam ac porta lectus, suscipit pellentesque urna.
+              </p>
+            </div>
+          </div>
+          <div class="col s12 m4">
+            <div class="icon-block">
+              <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+              <h5 class="center">Stories for Everyone</h5>
+              <p class="light">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue leo quis vestibulum tincidunt. Vivamus at vulputate dui. Sed sed dolor sagittis, consectetur 
+                nisl et, vehicula libero. Donec scelerisque velit consequat mauris sagittis elementum. In faucibus nisi leo, quis consequat ex semper at. Mauris a efficitur metus. 
+                Nulla nec ligula id risus feugiat interdum. Aliquam erat volutpat. Orci varius 
+                natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse quis dictum elit. Nam ac porta lectus, suscipit pellentesque urna.
+              </p>
+            </div>
+          </div>
+          <div class="col s12 m4">
+            <div class="icon-block">
+              <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+              <h5 class="center">Easy to Navigate Stories</h5>
+              <p class="light">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue leo quis vestibulum tincidunt. Vivamus at vulputate dui. Sed sed dolor sagittis, consectetur 
+                nisl et, vehicula libero. Donec scelerisque velit consequat mauris sagittis elementum. In faucibus nisi leo, quis consequat ex semper at. Mauris a efficitur metus. 
+                Nulla nec ligula id risus feugiat interdum. Aliquam erat volutpat. Orci varius 
+                natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse quis dictum elit. Nam ac porta lectus, suscipit pellentesque urna.
+              </p>
             </div>
           </div>
         </div>
       </div>
-</body>
-    
+      <br><br>
+      <div class="section">
+      </div>
+    </div>
+    <footer class="page-footer light-blue">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">Story Books</h5>
+            <p class="grey-text text-lighten-4">A random guy working on this project. Focused on providing a collection of stories usually for children for the fun of it and nothing more....</p>
+          </div>
+          <div class="col l3 s12">
+            <h5 class="white-text">Connect</h5>
+            <ul>
+              <li><a class="white-text" href="https://github.com/TChukwuleta">Github</a></li>
+              <li><a class="white-text" href="https://www.linkedin.com/in/tobechichukwuleta/">linkedIn</a></li>
+            </ul>
+          </div>
+          <div class="col l3 s12">
+            <h5 class="white-text">With Us</h5>
+            <ul>
+              <li><a class="white-text" href="https://twitter.com/TChukwuleta">Twitter</a></li>
+              <li><a class="white-text" href="https://web.facebook.com/chukwuleta.tobechi/">Facebook</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          Made by <a class="orange-text text-lighten-3">Story Books</a>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>
