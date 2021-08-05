@@ -23,7 +23,7 @@ passport.use(new GoogleStrategy({
     callbackURL: `${process.env.gcallbackURL}`,
     passReqToCallback: true
 }, (request: any, accessToken: any, refreshToken: any, profile: any, done: any) => {
-    console.log(profile)
+    // console.log(profile)
     // Check if the user already exists in the database
     Social.findOne({ googleId: profile.id })
     .then((currentUser) => {
@@ -37,10 +37,7 @@ passport.use(new GoogleStrategy({
             new Social({
                 username: profile.displayName, 
                 googleId: profile.id,
-                email: profile.email,
-                mobile: '',
-                bio: '',
-                summary: ''
+                email: profile.email
             }).save()
             .then((newUser) => {
                 console.log('New User created: ' + newUser)

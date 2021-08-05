@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import User from '../models/userModel'
 import Social from '../models/socialModel'
 import bcrypt from 'bcryptjs'
+import Test from '../models/testModel'
 import joi from 'joi'
 import * as dotenv from "dotenv";
 
@@ -95,13 +96,15 @@ const signinPost = async (req: Request, res: Response) => {
     try {
         const user = await User.login(email, password)
         const token = createToken(user._id)
-        res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
+        res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) 
         res.status(200).json({ user: user.id })
+        // console.log(req.body)
+        console.log(req.user)
     }
     catch (e) {
         const errorsss = handleErrors(e)
         res.status(400).json({errorsss})
-    }
+    } 
 }
 
 // Logout user
@@ -224,7 +227,7 @@ const editprofileSGet = (req: Request, res: Response, next: NextFunction) => {
 // Edit Social profile POST method
 const editprofileSPost = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const user = await Social.updateOne({ email: req.body.email}, {$set: {
+        const user = await Test.updateOne({ email: req.body.email}, {$set: {
             username: req.body.username,
             mobile: req.body.mobile,
             bio: req.body.bio,
@@ -232,10 +235,30 @@ const editprofileSPost = async (req: Request, res: Response, next: NextFunction)
         }},{new: true})
         console.log(user)
         res.send(user)
-    }
+    } 
     catch(e) {
         console.log(e)
         res.send(e)
+    }
+}
+
+// User social media POST sign up
+const signupSTest = async (req: Request, res: Response) => { 
+    // res.send(req.user)
+    try {
+        const reqUser = req.user as { username: string, email: string }
+        const user = await Test.create({
+            username: reqUser.username,
+            email: reqUser.email
+        })
+        const token = createToken(user._id)
+        res.cookie('jwt', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 }) 
+        res.render('dashboard.ejs', { user }) 
+        // res.status(201).json({user: user._id })
+    }
+    catch (e) {
+        console.log(e)
+        res.status(400).json({ e })
     }
 }
  
@@ -253,5 +276,6 @@ export default {
     editprofileSGet,
     editprofileSPost,
     forgetttpassPost,
-    resetpassPost
+    resetpassPost,
+    signupSTest
 }
