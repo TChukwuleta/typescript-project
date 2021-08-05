@@ -16,12 +16,6 @@ const testSchema: Schema = new Schema({
     email: {
         type: String
     }, 
-    googleId: {
-        type: String
-    },  
-    linkedinId: {
-        type: String
-    },
     mobile: {
         type: String
     },

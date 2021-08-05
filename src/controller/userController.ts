@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import User from '../models/userModel'
 import Social from '../models/socialModel'
-import bcrypt from 'bcryptjs'
 import Test from '../models/testModel'
 import joi from 'joi'
 import * as dotenv from "dotenv";
-
 dotenv.config();
 import jwt from 'jsonwebtoken'
+import { defaultFormat } from 'moment'
 
 // Handle errors
 const handleErrors = (err: any) => {
@@ -222,6 +221,7 @@ const editprofilePost = async (req: Request, res: Response, next: NextFunction) 
 // Edit Social profile GET method
 const editprofileSGet = (req: Request, res: Response, next: NextFunction) => {
     res.render('profile.ejs', { user: req.user })
+    console.log(req.user)
 } 
 
 // Edit Social profile POST method
@@ -242,24 +242,31 @@ const editprofileSPost = async (req: Request, res: Response, next: NextFunction)
     }
 }
 
-// User social media POST sign up
-const signupSTest = async (req: Request, res: Response) => { 
-    // res.send(req.user)
-    try {
-        const reqUser = req.user as { username: string, email: string }
-        const user = await Test.create({
-            username: reqUser.username,
-            email: reqUser.email
-        })
-        const token = createToken(user._id)
-        res.cookie('jwt', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 }) 
-        res.render('dashboard.ejs', { user }) 
-        // res.status(201).json({user: user._id })
-    }
-    catch (e) {
-        console.log(e)
-        res.status(400).json({ e })
-    }
+const sssP = async (req: Request, res: Response) => {
+    // res.send(req.body)
+    const reqUser = req.user as { username: string, email: string }
+    Test.findOne({ email: reqUser.email }, (err:any, data:any) => {
+        if(data) {
+            console.log('Userrrrr is: ', data)
+            res.render('dashboard.ejs', { user: data })
+        }
+        else {
+            const user = new Test({
+                email: reqUser.email,
+                username: reqUser.username
+            })
+            user.save()
+            .then((he) => {
+                console.log('Userrr is: ', he)
+                const token = createToken(he._id)
+                res.cookie('jwt', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000})
+                res.render('dashboard.ejs', { user: he })
+            })
+            .catch((e) => {
+                console.log(e)
+            })
+        }
+    })
 }
  
 export default {
@@ -277,5 +284,5 @@ export default {
     editprofileSPost,
     forgetttpassPost,
     resetpassPost,
-    signupSTest
+    sssP
 }

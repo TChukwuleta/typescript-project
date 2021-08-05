@@ -2,9 +2,7 @@ import passport from 'passport'
 const GoogleStrategy = require('passport-google-oauth2').Strategy
 import Social from '../models/socialModel'
 import * as dotenv from "dotenv";
-
 dotenv.config();
-
 
 passport.serializeUser((user: any, done: any) => {
     done(null, user.id)
@@ -15,7 +13,6 @@ passport.deserializeUser((id: string, done: any) => {
         done(null, user)
     })  
 })
-
 
 passport.use(new GoogleStrategy({
     clientID: `${process.env.gclientID}`,
@@ -29,7 +26,7 @@ passport.use(new GoogleStrategy({
     .then((currentUser) => {
         if(currentUser) {
             // User is in DB
-            console.log('User is: ', currentUser)
+            // console.log('User is: ', currentUser)
             done(null, currentUser)
         }
         else {
@@ -40,7 +37,7 @@ passport.use(new GoogleStrategy({
                 email: profile.email
             }).save()
             .then((newUser) => {
-                console.log('New User created: ' + newUser)
+                // console.log('New User created: ' + newUser)
                 done(null, newUser) 
             })
         }
