@@ -23,7 +23,7 @@ passport.use(new LinkedinStrategy({
     callbackURL: process.env.lcallbackURL,
     scope: ['r_emailaddress', 'r_liteprofile']
 }, (accessToken: any, refreshToken: any, profile: any, done: any) => {
-    console.log(profile)
+    // console.log(profile)
     //Check if the user already exists in the database
     Social.findOne({ linkedinId: profile.id })
     .then((currentUser) => {
@@ -36,11 +36,11 @@ passport.use(new LinkedinStrategy({
             // Create new user in the DB
             new Social({
                 username: profile.displayName,
-                // email: profile.emails[0].value,
-                linkedinId: profile.id  
+                linkedinId: profile.id,
+                email: profile.emails[0].value
             }).save()
             .then((newUser) => {
-                console.log('New User created: ' + newUser)
+                // console.log('New User created: ' + newUser)
                 done(null, newUser)
             })
         }

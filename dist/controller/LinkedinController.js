@@ -41,7 +41,7 @@ passport_1.default.use(new LinkedinStrategy({
     callbackURL: process.env.lcallbackURL,
     scope: ['r_emailaddress', 'r_liteprofile']
 }, function (accessToken, refreshToken, profile, done) {
-    console.log(profile);
+    // console.log(profile)
     //Check if the user already exists in the database
     socialModel_1.default.findOne({ linkedinId: profile.id })
         .then(function (currentUser) {
@@ -54,11 +54,11 @@ passport_1.default.use(new LinkedinStrategy({
             // Create new user in the DB
             new socialModel_1.default({
                 username: profile.displayName,
-                // email: profile.emails[0].value,
-                linkedinId: profile.id
+                linkedinId: profile.id,
+                email: profile.emails[0].value
             }).save()
                 .then(function (newUser) {
-                console.log('New User created: ' + newUser);
+                // console.log('New User created: ' + newUser)
                 done(null, newUser);
             });
         }

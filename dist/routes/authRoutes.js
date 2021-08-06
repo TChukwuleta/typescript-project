@@ -114,21 +114,22 @@ router.get('/dashboard', auth_1.default.checkAuthentication, function (req, res)
         reqUser = req.user;
         testModel_1.default.findOne({ email: reqUser.email }, function (err, data) {
             if (data) {
+                // res.json({ "data": data })
                 res.render('dashboard.ejs', { user: reqUser });
             }
             else {
                 var user = new testModel_1.default({
-                    username: data.username,
-                    email: data.email
+                    username: reqUser.username,
+                    email: reqUser.email
                 });
                 user.save()
                     .then(function (deet) {
+                    // res.json({ "deet": deet })
                     var createToken = jsonwebtoken_1.default.sign({ id: deet }, "" + process.env.jkeys, {
                         expiresIn: 12 * 60 * 60
                     });
                     res.cookie('jwt', createToken, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 });
                     res.render('dashboard.ejs', { user: deet });
-                    res.status(201).json({ user: deet._id });
                 })
                     .catch(function (e) {
                     console.log(e);

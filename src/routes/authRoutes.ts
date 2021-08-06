@@ -64,24 +64,25 @@ router.get('/dashboard', ri.checkAuthentication, async(req: Request, res: Respon
         const reqUser = req.user as { username: string, email: string }
         Test.findOne({ email: reqUser.email }, (err: any, data: any) => {
             if (data) {
+                // res.json({ "data": data })
                 res.render('dashboard.ejs', { user: reqUser })
             }
             else {
                 const user = new Test({
-                    username: data.username,
-                    email: data.email 
+                    username: reqUser.username,
+                    email: reqUser.email 
                 })
                 user.save()
                 .then((deet) => {
+                    // res.json({ "deet": deet })
                     const createToken = jwt.sign({id: deet}, `${process.env.jkeys}`, {
                         expiresIn: 12 * 60 * 60
                     })
                     res.cookie('jwt', createToken, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 })
                     res.render('dashboard.ejs', { user: deet })
-                    res.status(201).json({ user: deet._id })
                 })
-                .catch((e) => {
-                    console.log(e)
+                .catch((e) => { 
+                    console.log(e) 
                 })
             }
         })
