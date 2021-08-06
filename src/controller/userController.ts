@@ -6,7 +6,6 @@ import joi from 'joi'
 import * as dotenv from "dotenv";
 dotenv.config();
 import jwt from 'jsonwebtoken'
-import { defaultFormat } from 'moment'
 
 // Handle errors
 const handleErrors = (err: any) => {
@@ -220,8 +219,16 @@ const editprofilePost = async (req: Request, res: Response, next: NextFunction) 
 
 // Edit Social profile GET method
 const editprofileSGet = (req: Request, res: Response, next: NextFunction) => {
-    res.render('profile.ejs', { user: req.user })
-    console.log(req.user)
+    const reqUser = req.user as { username: string, email: string }
+    Test.findOne({ email: reqUser.email }, (err: any, data: any) => {
+        if (data) {
+            res.render('profile.ejs', { user: data })
+        }
+        else {
+            res.redirect('/login')
+        }
+    })
+    // res.render('profile.ejs', { user: req.user })
 } 
 
 // Edit Social profile POST method
@@ -238,35 +245,8 @@ const editprofileSPost = async (req: Request, res: Response, next: NextFunction)
     } 
     catch(e) {
         console.log(e)
-        res.send(e)
+        res.send(e) 
     }
-}
-
-const sssP = async (req: Request, res: Response) => {
-    // res.send(req.body)
-    const reqUser = req.user as { username: string, email: string }
-    Test.findOne({ email: reqUser.email }, (err:any, data:any) => {
-        if(data) {
-            console.log('Userrrrr is: ', data)
-            res.render('dashboard.ejs', { user: data })
-        }
-        else {
-            const user = new Test({
-                email: reqUser.email,
-                username: reqUser.username
-            })
-            user.save()
-            .then((he) => {
-                console.log('Userrr is: ', he)
-                const token = createToken(he._id)
-                res.cookie('jwt', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000})
-                res.render('dashboard.ejs', { user: he })
-            })
-            .catch((e) => {
-                console.log(e)
-            })
-        }
-    })
 }
  
 export default {
@@ -283,6 +263,5 @@ export default {
     editprofileSGet,
     editprofileSPost,
     forgetttpassPost,
-    resetpassPost,
-    sssP
+    resetpassPost
 }

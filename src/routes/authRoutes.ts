@@ -2,9 +2,11 @@ import express, { Request, Response } from 'express'
 import controller from '../controller/userController'
 import passport from 'passport'
 import * as dotenv from "dotenv";
+import jwt from 'jsonwebtoken'
 dotenv.config();
 const router = express.Router()
 import ri from '../middleware/auth'
+import Test from '../models/testModel';
 
 // Index Routes
 router.get('/', controller.homePage)
@@ -39,22 +41,10 @@ router.put('/editprofile', controller.editprofilePost);
 router.get('/editprofilee', ri.checkAuthentication, controller.editprofileSGet);
 router.put('/editprofilee', controller.editprofileSPost);
 
-
-// router.get('/auth/google/redirect', passport.authenticate('google', { 
-//     failureRedirect: '/' }),
-//  (req: Request, res: Response) => {
-//     res.redirect('/dashboard') 
-// })
-
-// router.get('/dashboard', ri.checkAuthentication, (req: Request, res: Response) => {
-//     res.render('dashboard.ejs', { user: req.user }) 
-// }) 
-
 // Google login and authenticate  
 router.get('/auth/google', passport.authenticate('google', {
     scope: ['email', 'profile']
 }))
-
 router.get('/auth/google/redirect', passport.authenticate('google', { 
     failureRedirect: '/' }),
  (req: Request, res: Response) => {
@@ -65,14 +55,41 @@ router.get('/auth/google/redirect', passport.authenticate('google', {
 router.get('/auth/linkedin', passport.authenticate('linkedin', {
     scope: ['r_emailaddress', 'r_liteprofile']
 }))
-
 router.get('/auth/linkedin/redirect', passport.authenticate('linkedin', { 
     failureRedirect: '/',
     successRedirect: '/dashboard'})
 )
 
-// router.get('/dashboard', ri.checkAuthentication, controller.sssP)
-router.get('/dashboard', controller.sssP)
+router.get('/dashboard', ri.checkAuthentication, async(req: Request, res: Response) => {
+        const reqUser = req.user as { username: string, email: string }
+        Test.findOne({ email: reqUser.email }, (err: any, data: any) => {
+            if (data) {
+                res.render('dashboard.ejs', { user: reqUser })
+            }
+            else {
+                const user = new Test({
+                    username: data.username,
+                    email: data.email 
+                })
+                user.save()
+                .then((deet) => {
+                    const createToken = jwt.sign({id: deet}, `${process.env.jkeys}`, {
+                        expiresIn: 12 * 60 * 60
+                    })
+                    res.cookie('jwt', createToken, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 })
+                    res.render('dashboard.ejs', { user: deet })
+                    res.status(201).json({ user: deet._id })
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+            }
+        })
+})
+
+// router.get('/dashboard', ri.checkAuthentication, (req: Request, res: Response) => {
+//     res.render('dashboard.ejs', { user: req.user }) 
+// }) 
 
 // Logout User
 router.get('/logout', controller.logoutUser)

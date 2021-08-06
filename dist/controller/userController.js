@@ -294,8 +294,16 @@ var editprofilePost = function (req, res, next) { return __awaiter(void 0, void 
 }); };
 // Edit Social profile GET method
 var editprofileSGet = function (req, res, next) {
-    res.render('profile.ejs', { user: req.user });
-    console.log(req.user);
+    var reqUser = req.user;
+    testModel_1.default.findOne({ email: reqUser.email }, function (err, data) {
+        if (data) {
+            res.render('profile.ejs', { user: data });
+        }
+        else {
+            res.redirect('/login');
+        }
+    });
+    // res.render('profile.ejs', { user: req.user })
 };
 // Edit Social profile POST method
 var editprofileSPost = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -324,35 +332,6 @@ var editprofileSPost = function (req, res, next) { return __awaiter(void 0, void
         }
     });
 }); };
-var sssP = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var reqUser;
-    return __generator(this, function (_a) {
-        reqUser = req.user;
-        testModel_1.default.findOne({ email: reqUser.email }, function (err, data) {
-            if (data) {
-                console.log('Userrrrr is: ', data);
-                res.render('dashboard.ejs', { user: data });
-            }
-            else {
-                var user = new testModel_1.default({
-                    email: reqUser.email,
-                    username: reqUser.username
-                });
-                user.save()
-                    .then(function (he) {
-                    console.log('Userrr is: ', he);
-                    var token = createToken(he._id);
-                    res.cookie('jwt', token, { httpOnly: true, maxAge: 12 * 60 * 60 * 1000 });
-                    res.render('dashboard.ejs', { user: he });
-                })
-                    .catch(function (e) {
-                    console.log(e);
-                });
-            }
-        });
-        return [2 /*return*/];
-    });
-}); };
 exports.default = {
     homePage: homePage,
     signupGet: signupGet,
@@ -367,6 +346,5 @@ exports.default = {
     editprofileSGet: editprofileSGet,
     editprofileSPost: editprofileSPost,
     forgetttpassPost: forgetttpassPost,
-    resetpassPost: resetpassPost,
-    sssP: sssP
+    resetpassPost: resetpassPost
 };

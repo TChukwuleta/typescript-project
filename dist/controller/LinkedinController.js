@@ -47,7 +47,7 @@ passport_1.default.use(new LinkedinStrategy({
         .then(function (currentUser) {
         if (currentUser) {
             // User is in the DB
-            console.log('User is: ', currentUser);
+            // console.log('User is: ', currentUser)
             done(null, currentUser);
         }
         else {

@@ -5,6 +5,9 @@ export interface ISUser extends Document {
     email: string
     googleId?: string 
     linkedinId?: string
+    mobile?: string
+    bio?: string
+    summary?: string
 }
 
 const socialSchema: Schema = new Schema({
@@ -19,6 +22,15 @@ const socialSchema: Schema = new Schema({
         type: String
     }, 
     linkedinId: {
+        type: String
+    },
+    mobile: {
+        type: String
+    },
+    bio: {
+        type: String
+    },
+    summary: {
         type: String
     }
 })

@@ -33,6 +33,15 @@ var socialSchema = new mongoose_1.Schema({
     },
     linkedinId: {
         type: String
+    },
+    mobile: {
+        type: String
+    },
+    bio: {
+        type: String
+    },
+    summary: {
+        type: String
     }
 });
 var Social = mongoose_1.default.model('social', socialSchema);
